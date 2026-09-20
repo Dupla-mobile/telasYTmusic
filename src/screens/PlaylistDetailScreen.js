@@ -21,10 +21,15 @@ export default function PlaylistDetailScreen() {
         <Text style={styles.title}>Descoberta Semanal</Text>
         <Text style={styles.subtitle}>{SONGS.length} músicas</Text>
 
-        <TouchableOpacity style={styles.playBtn} onPress={() => navigation.navigate("Player")}>
-          <Ionicons name="play" size={20} color="#000" />
-          <Text style={styles.playText}>Tocar tudo</Text>
-        </TouchableOpacity>
+        <View style={styles.actionsRow}>
+          <TouchableOpacity style={styles.playBtn} onPress={() => navigation.navigate("Player")}>
+            <Ionicons name="play" size={20} color="#000" />
+            <Text style={styles.playText}>Tocar tudo</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.shuffleBtn} onPress={() => navigation.navigate("Player")}>
+            <Ionicons name="shuffle" size={22} color={COLORS.text} />
+          </TouchableOpacity>
+        </View>
       </View>
 
       <FlatList
@@ -77,6 +82,19 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.sm,
     paddingHorizontal: SPACING.lg,
     borderRadius: RADIUS.pill,
+  },
+  actionsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  shuffleBtn: {
+    width: 44,
+    height: 44,
+    borderRadius: RADIUS.pill,
+    backgroundColor: COLORS.surfaceLight,
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: SPACING.md,
   },
   playText: {
     color: "#000",
