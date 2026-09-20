@@ -1,4 +1,5 @@
 import { View, StyleSheet } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -49,14 +50,16 @@ function Tabs() {
 
 export default function AppNavigator() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Tabs" component={Tabs} />
-        <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
-        <Stack.Screen name="Player" component={PlayerScreen} options={{ presentation: "modal" }} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Tabs" component={Tabs} />
+          <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
+          <Stack.Screen name="Player" component={PlayerScreen} options={{ presentation: "modal" }} />
+          <Stack.Screen name="Profile" component={ProfileScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
 
