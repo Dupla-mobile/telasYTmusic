@@ -41,13 +41,3 @@ src/
   constants/      -> tema (cores, espaçamentos, tipografia)
   data/           -> dados mockados (músicas, playlists, álbuns, usuário)
 ```
-
-## 👥 Dupla
-
-- Integrante 1: _(preencher)_
-- Integrante 2: _(preencher)_
-
-## 📌 Observações
-
-- Projeto feito para fins acadêmicos, sem vínculo com o Google/YouTube.
-- Dados de músicas e usuário são fictícios (mock).

@@ -23,7 +23,7 @@ export const ALBUMS = [
 ];
 
 export const USER = {
-  name: "Dupla do Projeto",
-  email: "dupla@exemplo.com",
+  name: "Usuário",
+  email: "usuario@exemplo.com",
   plan: "YT Music Premium (mock)",
 };
