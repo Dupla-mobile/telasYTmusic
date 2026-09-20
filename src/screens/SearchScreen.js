@@ -37,6 +37,7 @@ export default function SearchScreen() {
         <FlatList
           data={results}
           keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingBottom: 100 }}
           renderItem={({ item }) => <SongItem song={item} onPress={() => navigation.navigate("Player")} />}
         />
       )}
