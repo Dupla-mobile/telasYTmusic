@@ -30,9 +30,15 @@ export default function SearchScreen() {
       </View>
 
       {query.trim() === "" ? (
-        <Text style={styles.hint}>Digite algo para começar a buscar</Text>
+        <View style={styles.emptyState}>
+          <Ionicons name="musical-notes-outline" size={48} color={COLORS.textMuted} />
+          <Text style={styles.hint}>Digite algo para começar a buscar</Text>
+        </View>
       ) : results.length === 0 ? (
-        <Text style={styles.hint}>Nenhum resultado para "{query}"</Text>
+        <View style={styles.emptyState}>
+          <Ionicons name="sad-outline" size={48} color={COLORS.textMuted} />
+          <Text style={styles.hint}>Nenhum resultado para "{query}"</Text>
+        </View>
       ) : (
         <FlatList
           data={results}
@@ -65,9 +71,13 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.sm,
     fontSize: FONT_SIZES.md,
   },
+  emptyState: {
+    alignItems: "center",
+    marginTop: SPACING.xl,
+  },
   hint: {
     color: COLORS.textMuted,
-    marginTop: SPACING.lg,
+    marginTop: SPACING.md,
     textAlign: "center",
   },
 });
