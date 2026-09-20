@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
   },
   options: {
     paddingHorizontal: SPACING.md,
+    paddingBottom: SPACING.xl,
   },
   option: {
     flexDirection: "row",
