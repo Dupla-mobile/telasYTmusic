@@ -1,3 +1,4 @@
+import { View, StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -9,6 +10,7 @@ import LibraryScreen from "../screens/LibraryScreen";
 import PlaylistDetailScreen from "../screens/PlaylistDetailScreen";
 import PlayerScreen from "../screens/PlayerScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+import MiniPlayer from "../components/MiniPlayer";
 import { COLORS } from "../constants/theme";
 
 const Tab = createBottomTabNavigator();
@@ -22,21 +24,26 @@ const TAB_ICONS = {
 
 function Tabs() {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarStyle: { backgroundColor: COLORS.surface, borderTopColor: COLORS.border },
-        tabBarActiveTintColor: COLORS.primary,
-        tabBarInactiveTintColor: COLORS.textSecondary,
-        tabBarIcon: ({ color, size }) => (
-          <Ionicons name={TAB_ICONS[route.name]} size={size} color={color} />
-        ),
-      })}
-    >
-      <Tab.Screen name="Início" component={HomeScreen} />
-      <Tab.Screen name="Buscar" component={SearchScreen} />
-      <Tab.Screen name="Biblioteca" component={LibraryScreen} />
-    </Tab.Navigator>
+    <View style={{ flex: 1 }}>
+      <Tab.Navigator
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarStyle: { backgroundColor: COLORS.surface, borderTopColor: COLORS.border },
+          tabBarActiveTintColor: COLORS.primary,
+          tabBarInactiveTintColor: COLORS.textSecondary,
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name={TAB_ICONS[route.name]} size={size} color={color} />
+          ),
+        })}
+      >
+        <Tab.Screen name="Início" component={HomeScreen} />
+        <Tab.Screen name="Buscar" component={SearchScreen} />
+        <Tab.Screen name="Biblioteca" component={LibraryScreen} />
+      </Tab.Navigator>
+      <View style={styles.miniPlayerWrapper} pointerEvents="box-none">
+        <MiniPlayer />
+      </View>
+    </View>
   );
 }
 
@@ -52,3 +59,12 @@ export default function AppNavigator() {
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  miniPlayerWrapper: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    bottom: 56,
+  },
+});
