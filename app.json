@@ -1,14 +1,16 @@
 {
   "expo": {
-    "name": "YT Music Clone",
-    "slug": "youtube-music-clone",
-    "version": "1.0.0",
+    "name": "TelasYTmusic",
+    "slug": "telasytmusic",
+    "version": "2.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "backgroundColor": "#0F0F0F"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -17,8 +19,9 @@
         "backgroundColor": "#0F0F0F"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "scheme": "telasytmusic",
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
