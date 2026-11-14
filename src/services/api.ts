@@ -66,3 +66,15 @@ export async function buscarArtista(id: number): Promise<ResultadoArtista> {
     faixas: b.results.filter(ehFaixa).map(paraFaixa),
   };
 }
+
+export function enviarFeedback(dados: NovoFeedback): Promise<FeedbackEnviado> {
+  return req<FeedbackEnviado>(`${FEEDBACK}/posts`, { method: 'POST', body: JSON.stringify(dados) });
+}
+
+export const api = {
+  musicas: buscarMusicas,
+  albuns: buscarAlbuns,
+  album: buscarAlbum,
+  artista: buscarArtista,
+  feedback: enviarFeedback,
+};
