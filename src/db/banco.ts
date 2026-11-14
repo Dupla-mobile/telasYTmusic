@@ -107,3 +107,61 @@ export async function idsCurtidos(): Promise<number[]> {
   const linhas = await db.getAllAsync<{ trackId: number }>('SELECT trackId FROM curtidas');
   return linhas.map((l) => l.trackId);
 }
+
+// ---------- Playlists ----------
+export async function criarPlaylist(nome: string): Promise<number> {
+  const db = await getDb();
+  const r = await db.runAsync('INSERT INTO playlists (nome, criadaEm) VALUES (?, ?)', [nome.trim(), Date.now()]);
+  return r.lastInsertRowId;
+}
+
+export async function listarPlaylists(): Promise<PlaylistLocal[]> {
+  const db = await getDb();
+  return db.getAllAsync<PlaylistLocal>(
+    `SELECT p.id, p.nome, p.criadaEm,
+            (SELECT COUNT(*) FROM playlist_faixas f WHERE f.playlistId = p.id) AS total
+       FROM playlists p ORDER BY p.id DESC`,
+  );
+}
+
+export async function buscarPlaylist(id: number): Promise<PlaylistLocal | null> {
+  const db = await getDb();
+  return db.getFirstAsync<PlaylistLocal>(
+    `SELECT p.id, p.nome, p.criadaEm,
+            (SELECT COUNT(*) FROM playlist_faixas f WHERE f.playlistId = p.id) AS total
+       FROM playlists p WHERE p.id = ?`,
+    [id],
+  );
+}
+
+export async function excluirPlaylist(id: number): Promise<void> {
+  const db = await getDb();
+  await db.withTransactionAsync(async () => {
+    await db.runAsync('DELETE FROM playlist_faixas WHERE playlistId = ?', [id]);
+    await db.runAsync('DELETE FROM playlists WHERE id = ?', [id]);
+  });
+}
+
+// Devolve false quando a faixa ja estava na playlist.
+export async function adicionarNaPlaylist(playlistId: number, f: Faixa): Promise<boolean> {
+  const db = await getDb();
+  const r = await db.runAsync(
+    `INSERT OR IGNORE INTO playlist_faixas (playlistId, ${COLUNAS}, adicionadaEm) VALUES (?, ${INTERROGACOES}, ?)`,
+    [playlistId, ...paraLinha(f), Date.now()],
+  );
+  return r.changes > 0;
+}
+
+export async function listarFaixasDaPlaylist(playlistId: number): Promise<Faixa[]> {
+  const db = await getDb();
+  const linhas = await db.getAllAsync<Linha>(
+    `SELECT ${COLUNAS} FROM playlist_faixas WHERE playlistId = ? ORDER BY adicionadaEm ASC`,
+    [playlistId],
+  );
+  return linhas.map(paraFaixa);
+}
+
+export async function removerDaPlaylist(playlistId: number, trackId: number): Promise<void> {
+  const db = await getDb();
+  await db.runAsync('DELETE FROM playlist_faixas WHERE playlistId = ? AND trackId = ?', [playlistId, trackId]);
+}
