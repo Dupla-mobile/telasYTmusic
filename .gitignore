@@ -10,3 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 .DS_Store
+
+.env
+expo-env.d.ts
+package-lock.json
