@@ -81,3 +81,29 @@ const paraFaixa = (l: Linha): Faixa => ({
   previewUrl: l.previewUrl ?? undefined,
   duracaoMs: l.duracaoMs ?? undefined,
 });
+
+// ---------- Curtidas ----------
+export async function curtir(f: Faixa): Promise<void> {
+  const db = await getDb();
+  await db.runAsync(
+    `INSERT OR REPLACE INTO curtidas (${COLUNAS}, curtidoEm) VALUES (${INTERROGACOES}, ?)`,
+    [...paraLinha(f), Date.now()],
+  );
+}
+
+export async function descurtir(trackId: number): Promise<void> {
+  const db = await getDb();
+  await db.runAsync('DELETE FROM curtidas WHERE trackId = ?', [trackId]);
+}
+
+export async function listarCurtidas(): Promise<Faixa[]> {
+  const db = await getDb();
+  const linhas = await db.getAllAsync<Linha>(`SELECT ${COLUNAS} FROM curtidas ORDER BY curtidoEm DESC`);
+  return linhas.map(paraFaixa);
+}
+
+export async function idsCurtidos(): Promise<number[]> {
+  const db = await getDb();
+  const linhas = await db.getAllAsync<{ trackId: number }>('SELECT trackId FROM curtidas');
+  return linhas.map((l) => l.trackId);
+}
