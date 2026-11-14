@@ -28,3 +28,17 @@ async function req<T>(url: string, init?: RequestInit, timeoutMs = 10000): Promi
 }
 
 const enc = encodeURIComponent;
+
+export async function buscarMusicas(termo: string, limite = 25): Promise<Faixa[]> {
+  const d = await req<RespostaItunes>(
+    `${ITUNES}/search?term=${enc(termo)}&media=music&entity=song&country=BR&limit=${limite}`,
+  );
+  return d.results.filter(ehFaixa).map(paraFaixa);
+}
+
+export async function buscarAlbuns(termo: string, limite = 20): Promise<Album[]> {
+  const d = await req<RespostaItunes>(
+    `${ITUNES}/search?term=${enc(termo)}&media=music&entity=album&country=BR&limit=${limite}`,
+  );
+  return d.results.filter(ehAlbum).map(paraAlbum);
+}
