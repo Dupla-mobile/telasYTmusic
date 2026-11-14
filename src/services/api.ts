@@ -42,3 +42,27 @@ export async function buscarAlbuns(termo: string, limite = 20): Promise<Album[]>
   );
   return d.results.filter(ehAlbum).map(paraAlbum);
 }
+
+export type ResultadoAlbum = { album: Album; faixas: Faixa[] };
+export type ResultadoArtista = { artista: Artista; albuns: Album[]; faixas: Faixa[] };
+
+export async function buscarAlbum(id: number): Promise<ResultadoAlbum> {
+  const d = await req<RespostaItunes>(`${ITUNES}/lookup?id=${id}&entity=song&country=BR`);
+  const colecao = d.results.find(ehAlbum);
+  if (!colecao) throw new Error('Álbum não encontrado');
+  return { album: paraAlbum(colecao), faixas: d.results.filter(ehFaixa).map(paraFaixa) };
+}
+
+export async function buscarArtista(id: number): Promise<ResultadoArtista> {
+  const [a, b] = await Promise.all([
+    req<RespostaItunes>(`${ITUNES}/lookup?id=${id}&entity=album&limit=20&country=BR`),
+    req<RespostaItunes>(`${ITUNES}/lookup?id=${id}&entity=song&limit=10&country=BR`),
+  ]);
+  const info = a.results.find((i) => i.wrapperType === 'artist');
+  if (!info) throw new Error('Artista não encontrado');
+  return {
+    artista: { id, nome: info.artistName ?? 'Artista', genero: info.primaryGenreName },
+    albuns: a.results.filter(ehAlbum).map(paraAlbum),
+    faixas: b.results.filter(ehFaixa).map(paraFaixa),
+  };
+}
