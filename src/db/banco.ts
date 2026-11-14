@@ -165,3 +165,35 @@ export async function removerDaPlaylist(playlistId: number, trackId: number): Pr
   const db = await getDb();
   await db.runAsync('DELETE FROM playlist_faixas WHERE playlistId = ? AND trackId = ?', [playlistId, trackId]);
 }
+
+// ---------- Historico de reproducao ----------
+export async function registrarHistorico(f: Faixa): Promise<void> {
+  const db = await getDb();
+  await db.runAsync(`INSERT INTO historico (${COLUNAS}, tocadoEm) VALUES (${INTERROGACOES}, ?)`, [
+    ...paraLinha(f),
+    Date.now(),
+  ]);
+}
+
+export async function listarHistorico(limite = 50): Promise<Faixa[]> {
+  const db = await getDb();
+  const linhas = await db.getAllAsync<Linha>(`SELECT ${COLUNAS} FROM historico ORDER BY id DESC LIMIT ?`, [limite]);
+  return linhas.map(paraFaixa);
+}
+
+// "Ouca de novo": ultima vez de cada faixa, sem repetir
+export async function listarOuvidasRecentes(limite = 10): Promise<Faixa[]> {
+  const db = await getDb();
+  const linhas = await db.getAllAsync<Linha>(
+    `SELECT ${COLUNAS} FROM historico
+      WHERE id IN (SELECT MAX(id) FROM historico GROUP BY trackId)
+      ORDER BY id DESC LIMIT ?`,
+    [limite],
+  );
+  return linhas.map(paraFaixa);
+}
+
+export async function limparHistorico(): Promise<void> {
+  const db = await getDb();
+  await db.runAsync('DELETE FROM historico');
+}
