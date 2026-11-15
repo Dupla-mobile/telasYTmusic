@@ -59,7 +59,7 @@ export default function DetalheAlbum() {
         <FlatList
           data={faixas}
           keyExtractor={(f) => String(f.id)}
-          ListHeaderComponent={topo}
+          ListHeaderComponent={topo ?? undefined}
           contentContainerStyle={{ paddingBottom: espaco }}
           renderItem={({ item, index }) => <ItemFaixa faixa={item} onPress={() => tocar(faixas, index)} />}
         />
