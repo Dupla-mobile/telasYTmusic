@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
+import { ColorValue } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ALTURA_TABS } from '../../../src/constants/layout';
 import { useTema } from '../../../src/context/ThemeContext';
@@ -7,7 +8,7 @@ import { useTema } from '../../../src/context/ThemeContext';
 type Icone = keyof typeof Ionicons.glyphMap;
 
 function icone(nome: Icone, ativo: Icone) {
-  return ({ color, size, focused }: { color: string; size: number; focused: boolean }) => (
+  return ({ color, size, focused }: { color: ColorValue; size: number; focused: boolean }) => (
     <Ionicons name={focused ? ativo : nome} size={size} color={color} />
   );
 }
