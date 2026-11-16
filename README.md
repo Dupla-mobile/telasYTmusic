@@ -1,43 +1,45 @@
-# YT Music Clone
+# TelasYTmusic
 
-Projeto de faculdade: clone (mocagem) do app **YouTube Music**, feito em **React Native + Expo**, no formato híbrido ensinado em aula.
+Clone funcional do **YouTube Music** em **React Native + Expo (SDK 58)**, feito para o P2 de Aplicativos Híbridos.
 
-## 🎯 Sobre
+## Como rodar
 
-App com 6 telas principais, navegação por abas + stack, tema visual escuro inspirado no YouTube Music (preto + vermelho), dados mockados de músicas/playlists/álbuns e um player funcional (sem áudio real — é uma mocagem visual/de interação).
-
-## 📱 Telas
-
-1. **Início** — carrosséis de "Ouça de novo", "Feito para você" e "Novos lançamentos"
-2. **Buscar** — busca em tempo real por música/artista
-3. **Biblioteca** — playlists, álbuns e músicas curtidas
-4. **Detalhe da Playlist** — capa, ações (tocar tudo / embaralhar) e lista de músicas
-5. **Player** — capa, progresso, like e controles de reprodução (play/pause, próxima, anterior, shuffle, repeat)
-6. **Perfil** — dados do usuário, plano e opções de conta
-
-Além disso, um **mini-player fixo** aparece acima da barra de abas, como no app original.
-
-## 🚀 Como rodar
-
-Pré-requisitos: [Node.js](https://nodejs.org/) instalado e o app **Expo Go** no celular (ou um emulador Android/iOS configurado).
+Requer **Node.js 22.13 ou superior** (exigência do SDK 58).
 
 ```bash
-# instalar dependências
 npm install
-
-# rodar o projeto
 npx expo start
 ```
 
-Depois é só escanear o QR Code com o app Expo Go (Android) ou a câmera (iOS).
+Escaneie o QR code com o **Expo Go** (versão do SDK 58). Login simulado: qualquer e-mail válido e senha com 4+ caracteres.
 
-## 📂 Estrutura
+## O que o app faz
+
+- Toca prévias de 30 s de músicas reais (iTunes Search API, sem chave) com fila, aleatório, repetir e mini-player.
+- Busca músicas/álbuns, navega por gênero, abre álbuns e artistas.
+- Curtidas, playlists próprias e histórico guardados no aparelho.
+
+## Telas (15) — navegação com Expo Router
+
+| Rota | Tela |
+|---|---|
+| `/login` | Login |
+| `/(tabs)` | Início, Explorar, Biblioteca, Perfil |
+| `/busca` | Busca (músicas/álbuns) |
+| `/album/[id]` | Detalhe do álbum |
+| `/artista/[id]` | Detalhe do artista |
+| `/player` | Player (modal) |
+| `/curtidas` | Músicas curtidas |
+| `/playlist/[id]` | Detalhe da playlist |
+| `/playlist/nova` | Nova playlist |
+| `/historico` | Histórico de reprodução |
+| `/configuracoes` | Configurações |
+| `/feedback` | Enviar feedback (POST) |
+
+## Estrutura
 
 ```
+app/        rotas (Expo Router)
 src/
-  screens/       -> uma tela por arquivo
-  components/    -> SongItem, MiniPlayer (componentes reutilizáveis)
-  navigation/     -> AppNavigator (tabs + stack)
-  constants/      -> tema (cores, espaçamentos, tipografia)
-  data/           -> dados mockados (músicas, playlists, álbuns, usuário)
+  components/  context/  db/  hooks/  services/  constants/  utils/  types.ts
 ```
